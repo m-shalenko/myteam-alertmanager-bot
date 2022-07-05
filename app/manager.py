@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from email import message
 import os
 import sys
 import json
