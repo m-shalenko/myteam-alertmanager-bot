@@ -1,0 +1,7 @@
+python-json-logger
+mailru-im-bot
+jsonschema
+jinja2
+aiohttp
+cchardet
+aiodns
