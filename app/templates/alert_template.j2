@@ -8,8 +8,13 @@ Status: <b>{{ status | upper }}</b> ✅
 {%- set severity = common_labels.severity %}
 Priority: {% if severity | upper == 'CRITICAL' or severity | upper == 'ERROR' %}<b>{{ severity | upper }}</b> ❗️{% elif severity == "WARNING" %}<b>{{ severity | upper }}</b> ⚠️{% else %}<b>{{ severity | upper }}</b> ℹ️{% endif %}
 {%- endif %}
+{%- if common_annotations.summary is defined and common_annotations.summary %}
 {%- set summary = common_annotations.summary | replace('<', '&lt;') | replace('>', '&gt;') %}
 Summary: <b>{{ summary }}</b>
+{%- else %}
+{%- set summary = alerts[0].annotations.summary | replace('<', '&lt;') | replace('>', '&gt;') %}
+Summary: <b>{{ summary }}</b>
+{%- endif %}
 {%- if common_annotations.description %}
 {%- set description = common_annotations.description | replace('<', '&lt;') | replace('>', '&gt;') %}
 Description: <b>{{ description }}</b>

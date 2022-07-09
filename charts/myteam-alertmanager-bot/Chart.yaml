@@ -1,0 +1,9 @@
+apiVersion: v2
+name: myteam-alertmanager-bot
+description: A Helm chart for MyTeam Alertmanager Bot
+type: application
+version: 0.1.0
+appVersion: v0.1.4
+maintainers:
+  - name: Maxim Shalenko
+    email: m.shalenko97@gmail.com

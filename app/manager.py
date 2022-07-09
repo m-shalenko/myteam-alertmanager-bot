@@ -24,17 +24,16 @@ def set_log_level(level):
     return log_level
 
 def create_alert_msg(message):
-    if envs['parse_mode'] == 'HTML':
-      with open('alert_template.html.j2') as f:
-        base = f.read()
-      t = Template(base)
-      alert_msg = t.render(
-        status=message['status'],
-        common_labels=message['commonLabels'],
-        common_annotations=message['commonAnnotations'],
-        alerts=message['alerts']
-      )
-      return alert_msg
+    with open('templates/alert_template.j2') as f:
+      base = f.read()
+    t = Template(base)
+    alert_msg = t.render(
+      status=message['status'],
+      common_labels=message['commonLabels'],
+      common_annotations=message['commonAnnotations'],
+      alerts=message['alerts']
+    )
+    return alert_msg
 
 def validate_jsonschema(instance, schema):
     try:
