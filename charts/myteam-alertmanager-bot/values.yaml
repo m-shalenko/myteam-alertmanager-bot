@@ -1,0 +1,129 @@
+# Default values for myteam-alertmanager-bot.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: mshalenko/myteam-alertmanager-bot
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+args: {}
+
+envVars:
+  API_URL_BASE: https://API_URL_BASE/bot/v1/
+  BOT_NAME: BOT_NAME
+  CHAT_ID: CHAT_ID
+
+envVarsSecret:
+  API_TOKEN: API_TOKEN
+
+alertTemplate: |-
+  {% if status is defined and status == 'firing' -%}
+  Status: <b>{{ status | upper }}</b> 🔥
+  {%- endif %}
+  {%- if status is defined and status == 'resolved' %}
+  Status: <b>{{ status | upper }}</b> ✅
+  {%- endif %}
+  {%- if common_labels is defined and common_labels %}
+  {%- set severity = common_labels.severity %}
+  Priority: {% if severity | upper == 'CRITICAL' or severity | upper == 'ERROR' %}<b>{{ severity | upper }}</b> ❗️{% elif severity == "WARNING" %}<b>{{ severity | upper }}</b> ⚠️{% else %}<b>{{ severity | upper }}</b> ℹ️{% endif %}
+  {%- endif %}
+  {%- if common_annotations.summary is defined and common_annotations.summary %}
+  {%- set summary = common_annotations.summary | replace('<', '&lt;') | replace('>', '&gt;') %}
+  Summary: <b>{{ summary }}</b>
+  {%- else %}
+  {%- set summary = alerts[0].annotations.summary | replace('<', '&lt;') | replace('>', '&gt;') %}
+  Summary: <b>{{ summary }}</b>
+  {%- endif %}
+  {%- if common_annotations.description %}
+  {%- set description = common_annotations.description | replace('<', '&lt;') | replace('>', '&gt;') %}
+  Description: <b>{{ description }}</b>
+  {%- endif %}
+  Instances:
+  {%- for alert in alerts %}
+  {%- set instance = alert.annotations.instance | replace('<', '&lt;') | replace('>', '&gt;') %}
+  {%- set value = alert.annotations.value | replace('<', '&lt;') | replace('>', '&gt;') %}
+  - {% if instance is defined and instance %}{{ instance }}{% else %}None{% endif %}: {% if value is defined and value %}{{ value }}{% else %}None{% endif %}
+  {%- endfor %}
+
+livenessProbe:
+  httpGet:
+    path: /health
+    port: http
+  periodSeconds: 10
+  initialDelaySeconds: 10
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /health
+    port: http
+  periodSeconds: 10
+  initialDelaySeconds: 10
+  failureThreshold: 3
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  fsGroup: 65534
+
+securityContext:
+  privileged: false
+  allowPrivilegeEscalation: false
+  capabilities:
+    add:
+      - NET_BIND_SERVICE
+    drop:
+      - ALL
+  runAsNonRoot: true
+  runAsUser: 65534
+  runAsGroup: 65534
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: myteam-alertmanager-bot.example.com
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

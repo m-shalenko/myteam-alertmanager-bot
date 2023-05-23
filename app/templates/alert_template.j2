@@ -1,0 +1,27 @@
+{% if status is defined and status == 'firing' -%}
+Status: <b>{{ status | upper }}</b> 🔥
+{%- endif %}
+{%- if status is defined and status == 'resolved' %}
+Status: <b>{{ status | upper }}</b> ✅
+{%- endif %}
+{%- if common_labels is defined and common_labels %}
+{%- set severity = common_labels.severity %}
+Priority: {% if severity | upper == 'CRITICAL' or severity | upper == 'ERROR' %}<b>{{ severity | upper }}</b> ❗️{% elif severity == "WARNING" %}<b>{{ severity | upper }}</b> ⚠️{% else %}<b>{{ severity | upper }}</b> ℹ️{% endif %}
+{%- endif %}
+{%- if common_annotations.summary is defined and common_annotations.summary %}
+{%- set summary = common_annotations.summary | replace('<', '&lt;') | replace('>', '&gt;') %}
+Summary: <b>{{ summary }}</b>
+{%- else %}
+{%- set summary = alerts[0].annotations.summary | replace('<', '&lt;') | replace('>', '&gt;') %}
+Summary: <b>{{ summary }}</b>
+{%- endif %}
+{%- if common_annotations.description %}
+{%- set description = common_annotations.description | replace('<', '&lt;') | replace('>', '&gt;') %}
+Description: <b>{{ description }}</b>
+{%- endif %}
+Instances:
+{%- for alert in alerts %}
+{%- set instance = alert.annotations.instance | replace('<', '&lt;') | replace('>', '&gt;') %}
+{%- set value = alert.annotations.value | replace('<', '&lt;') | replace('>', '&gt;') %}
+- {% if instance is defined and instance %}{{ instance }}{% else %}None{% endif %}: {% if value is defined and value %}{{ value }}{% else %}None{% endif %}
+{%- endfor %}

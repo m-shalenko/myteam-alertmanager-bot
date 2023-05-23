@@ -1,0 +1,10 @@
+{{- if .Values.envVars -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "myteam-alertmanager-bot.fullname" . }}
+data:
+  {{- range $key, $val := .Values.envVars }}
+  {{ $key }}: {{ $val | quote }}
+  {{- end}}
+{{- end }}
