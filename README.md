@@ -22,7 +22,7 @@ This is a bot that can be integrated with [VKTeams Messenger](https://teams.vk.c
 - Define `API_URL_BASE` variable (required)
 - Define `BOT_NAME` variable (required)
 - Define default `CHAT_ID` variable (required)
-- Define extra chat ids using the variable like this one `CHAT_ID_<ALERTMANAGER_RECEIVER_NAME>`. `<ALERTMANAGER_RECEIVER_NAME>` must match receiver name in your alertmanager config and be upper-case, `-` replaced with `_`.
+- If you would like to use a few chats to send alerts, define extra chat ids using the variable like this one `CHAT_ID_<ALERTMANAGER_RECEIVER_NAME>`. `<ALERTMANAGER_RECEIVER_NAME>` must match receiver name in your alertmanager config and be upper-case, `-` replaced with `_`.
 - Define `API_TOKEN` variable (required)
 
 4. Quick start and test:
