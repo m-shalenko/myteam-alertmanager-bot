@@ -19,11 +19,11 @@ This is a bot that can be integrated with [VKTeams Messenger](https://teams.vk.c
 - Type `/setjoingroups` and enter botId or nick name of bot
 
 3. Also, you must define some environment variables in your myteam-alertmanager-bot installation.
-- Define `API_URL_BASE` variable (required)
-- Define `BOT_NAME` variable (required)
-- Define default `CHAT_ID` variable (required)
+- Define `API_URL_BASE` variable
+- Define `BOT_NAME` variable
+- Define default `CHAT_ID` variable
 - If you would like to use a few chats to send alerts, define extra chat ids using the variable like this one `CHAT_ID_<ALERTMANAGER_RECEIVER_NAME>`. `<ALERTMANAGER_RECEIVER_NAME>` must match receiver name in your alertmanager config and be upper-case, `-` replaced with `_`.
-- Define `API_TOKEN` variable (required)
+- Define `API_TOKEN` variable
 
 4. Quick start and test:
 
