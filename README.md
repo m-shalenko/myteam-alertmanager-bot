@@ -22,7 +22,7 @@ This is a bot that can be integrated with [VKTeams Messenger](https://teams.vk.c
 - Define `API_URL_BASE` variable (required)
 - Define `BOT_NAME` variable (required)
 - Define default `CHAT_ID` variable (required)
-- Define extra chat ids using the variable like this one `CHAT_ID_<ALERTMANAGER_RECEIVER_NAME>`. `<ALERTMANAGER_RECEIVER_NAME>` must be upper-case and `-` replaced with `_`.
+- Define extra chat ids using the variable like this one `CHAT_ID_<ALERTMANAGER_RECEIVER_NAME>`. `<ALERTMANAGER_RECEIVER_NAME>` must match receiver name in your alertmanager config and be upper-case, `-` replaced with `_`.
 - Define `API_TOKEN` variable (required)
 
 4. Quick start and test:
@@ -37,7 +37,7 @@ export CHAT_ID_VKTEAMS_BAR_ALERTS="<chat_id_2>"
 cd app/
 python3 manager.py
 
-curl localhost:8080/api/v1/push -X POST -d '{"receiver": "test", "status": "resolved", "alerts": [{"status": "firing", "labels": {"alertgroup": "test", "alertname": "test", "instance": "test", "job": "node-exporter", "prometheus": "monitoring-system/vmagent", "severity": "info"}, "annotations": {"instance": "test", "reference": "", "summary": "test", "value": "test"}, "startsAt": "2022-06-29T11:34:26.055376888Z", "endsAt": "0001-01-01T00:00:00Z", "generatorURL": "http://vmalert-vmalert-7b4dc58787-jzfvn:8080/api/v1/10784142485096446030/2135157705199415880/status", "fingerprint": "767a027249c67bd4"}], "groupLabels": {"alertname": "test"}, "commonLabels": {"alertgroup": "test", "alertname": "test", "instance": "test", "job": "node-exporter", "prometheus": "monitoring-system/vmagent", "severity": "info"}, "commonAnnotations": {"instance": "test", "reference": "", "summary": "test", "value": "test"}}' -H 'Content-Type: application/json' -v
+curl localhost:8080/api/v1/push -X POST -d '{"receiver": "vkteams-foo-alerts", "status": "firing", "alerts": [{"status": "firing", "labels": {"alertgroup": "test", "alertname": "test", "instance": "test", "job": "node-exporter", "prometheus": "monitoring-system/vmagent", "severity": "info"}, "annotations": {"instance": "test", "reference": "", "summary": "test", "value": "test"}, "startsAt": "2022-06-29T11:34:26.055376888Z", "endsAt": "0001-01-01T00:00:00Z", "generatorURL": "http://vmalert-vmalert-7b4dc58787-jzfvn:8080/api/v1/10784142485096446030/2135157705199415880/status", "fingerprint": "767a027249c67bd4"}], "groupLabels": {"alertname": "test"}, "commonLabels": {"alertgroup": "test", "alertname": "test", "instance": "test", "job": "node-exporter", "prometheus": "monitoring-system/vmagent", "severity": "info"}, "commonAnnotations": {"instance": "test", "reference": "", "summary": "test", "value": "test"}}' -H 'Content-Type: application/json' -v
 ```
 5. To make it all works using alertmanager, you have to define a `webhook_config` in your alertmanager installation.
 ```yaml
